@@ -1,0 +1,506 @@
+<div class="container mt-5">
+  <div class="card card-principal">
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="promocao"
+              >Promoção:
+              <i
+                class="far fa-question-circle"
+                tooltip="Escolha sua promoção"
+              ></i
+            ></label>
+            <select
+              class="form-control form-control-sm"
+              id="promocao"
+              name="promocao"
+              formControlName="promocao"
+            >
+              <option value="0"
+                >0% de taxa no débito e crédito nos 3 primeiros meses</option
+              >
+              <option value="199"
+                >1.99% de taxa no débito no primeiro ano</option
+              >
+              <option value="null">Sem promoção</option>
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label for="planoRecebimento"
+              >Plano de Recebimento:
+              <i
+                class="far fa-question-circle"
+                tooltip="Possibilita o recebimento de todo o valor das vendas parceladas em uma única vez (antecipação) ou em parcelas"
+              ></i
+            ></label>
+            <select
+              class="form-control form-control-sm"
+              id="planoRecebimento"
+              name="planoRecebimento"
+              formControlName="planoRecebimento"
+            >
+              <option value="naHora">Na Hora</option>
+              <option value="14D">14 Dias</option>
+              <option value="30D">30 Dias</option>
+              <option value="30DT">30 Dias - Tarja</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="taxaCreditoAVista"
+              >Taxa Crédito a Vista:
+              <i
+                class="far fa-question-circle"
+                tooltip="Taxa cobrada por vendas em crédito à vista"
+              ></i
+            ></label>
+            <input
+              currencyMask
+              [options]="{
+                decimal: '.',
+                prefix: '',
+                suffix: ' %',
+                thousands: ','
+              }"
+              id="taxaCreditoAVista"
+              name="taxaCreditoAVista"
+              class="form-control form-control-sm"
+              type="text"
+              formControlName="taxaCreditoAVista"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="taxaCreditoParcelado"
+              >Taxa de Crédito Parcelado:
+              <i
+                class="far fa-question-circle"
+                tooltip="Taxa cobrada por vendas em crédito parcelado"
+              ></i
+            ></label>
+            <input
+              id="taxaCreditoParcelado"
+              name="taxaCreditoParcelado"
+              class="form-control form-control-sm"
+              type="text"
+              currencyMask
+              [options]="{
+                decimal: '.',
+                prefix: '',
+                suffix: ' %',
+                thousands: ','
+              }"
+              formControlName="taxaCreditoParcelado"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="taxaDebito"
+              >Taxa Débito:
+              <i
+                class="far fa-question-circle"
+                tooltip="Taxa cobrada por vendas a débito"
+              ></i
+            ></label>
+            <input
+              id="taxaDebito"
+              name="taxaDebito"
+              class="form-control form-control-sm"
+              type="text"
+              currencyMask
+              [options]="{
+                decimal: '.',
+                prefix: '',
+                suffix: ' %',
+                thousands: ','
+              }"
+              formControlName="taxaDebito"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="taxaParcelamento"
+              >Taxa de Parcelamento:
+              <i
+                class="far fa-question-circle"
+                tooltip="Taxa cobrada em cada parcela por vendas em crédito parcelado"
+              ></i
+            ></label>
+            <input
+              id="taxaParcelamento"
+              name="taxaParcelamento"
+              class="form-control form-control-sm"
+              type="text"
+              currencyMask
+              [options]="{
+                decimal: '.',
+                prefix: '',
+                suffix: ' %',
+                thousands: ','
+              }"
+              formControlName="taxaParcelamento"
+            />
+          </div>
+          <div class="col-md-4">
+            <label for="tabela"
+              >Quem vai pagar a tarifa?
+              <i
+                class="far fa-question-circle"
+                tooltip="Caso já saiba quem irá arcar com a tárifa selecione"
+              ></i
+            ></label>
+            <select
+              class="form-control form-control-sm"
+              id="tabela"
+              name="tabela"
+              formControlName="tabela"
+            >
+              <option value="todos" selected>Ver todos</option>
+              <option value="vendedor">Vendedor</option>
+              <option value="cliente">Cliente</option>
+              <option value="dividido">Dividido</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="valorTransacao"
+              >Valor da Transação:
+              <i
+                class="far fa-question-circle"
+                tooltip="Digite aqui o valor do da venda"
+              ></i>
+            </label>
+
+            <input
+              (blur)="validarFormulario()"
+              [ngClass]="{
+                'invalid-field': validForm && form.status == 'INVALID'
+              }"
+              currencyMask
+              id="valorTransacao"
+              name="valorTransacao"
+              class="form-control form-control-sm"
+              type="text"
+              formControlName="valorTransacao"
+            />
+          </div>
+
+          <div class="col-md-2 acoes">
+            <button
+              type="button"
+              (click)="limpar()"
+              class="btn btn-secondary btn-block btn-sm"
+            >
+              Limpar
+            </button>
+          </div>
+          <div class="col-md-2 acoes">
+            <button
+              id="calcular"
+              type="button"
+              class="btn btn-primary btn-block btn-sm"
+              (click)="calcular(form.value)"
+              [disabled]="!form.valid"
+            >
+              Cálcular
+            </button>
+          </div>
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <span
+              class="ml-2 alert-erro"
+              *ngIf="validForm && form.status == 'INVALID'"
+              >Informe o valor da tansação!<i
+                class="ml-1 fas fa-info-circle"
+              ></i
+            ></span>
+          </div>
+          <div class="col-md-4"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <section class="table-responsive mt-3 mb-5" *ngIf="resultados.length > 0">
+    <table class="table table-bordered table-hover table-sm pt text-center">
+      <thead>
+        <tr>
+          <th colspan="2" class="text-center titulo1">PLANO</th>
+          <th
+            colspan="4"
+            class="text-center titulo2"
+            *ngIf="tabela == 'todos' || tabela == 'vendedor'"
+          >
+            VENDEDOR ARCANDO COM TODAS AS TAXAS
+          </th>
+          <th
+            colspan="4"
+            class="text-center titulo4"
+            *ngIf="tabela == 'todos' || tabela == 'cliente'"
+          >
+            CLIENTE ARCANDO COM TODAS AS TAXAS
+          </th>
+          <th
+            colspan="3"
+            class="text-center titulo3"
+            *ngIf="tabela == 'todos' || tabela == 'dividido'"
+          >
+            CLIENTE ARCANDO COM A TAXA DE PARCELAMENTO
+          </th>
+        </tr>
+        <tr>
+          <th class="text-center subtitulo1">
+            <span tooltip="Descrição do plano">Descrição</span>
+          </th>
+          <th class="text-center subtitulo1">
+            <span tooltip="Taxa de intermediação mais a taxa de parcelamento"
+              >Taxa Total</span
+            >
+          </th>
+          <th
+            class="text-center subtitulo2"
+            *ngIf="tabela == 'todos' || tabela == 'vendedor'"
+          >
+            <span
+              tooltip="Parcela sem acréscimo no caso do vendedor arcar com os descontos"
+              >Valor da Venda</span
+            >
+          </th>
+
+          <th
+            class="text-center subtitulo2"
+            *ngIf="tabela == 'todos' || tabela == 'vendedor'"
+          >
+            <span
+              tooltip="Parcela sem acréscimo no caso do vendedor arcar com os descontos"
+              >Valor das Parcelas</span
+            >
+          </th>
+
+          <th
+            class="text-center subtitulo2"
+            *ngIf="tabela == 'todos' || tabela == 'vendedor'"
+          >
+            <span tooltip="Valor das taxas de intermediação e de parcelamento"
+              >Valor das taxas</span
+            >
+          </th>
+
+          <th
+            class="text-center subtitulo2"
+            *ngIf="tabela == 'todos' || tabela == 'vendedor'"
+          >
+            <span
+              tooltip="Valor da compra subtraído da taxa. É o valor que o vendedor irá receber"
+              class="text-center"
+              >Valor Líq. à Receber</span
+            >
+          </th>
+
+          <th
+            class="text-center subtitulo4"
+            *ngIf="tabela == 'todos' || tabela == 'cliente'"
+          >
+            <span
+              tooltip="Valor da compra no caso do vendedor repassar as taxas do financiamento ao cliente. Vendedor irá receber o valor integral da transação"
+              >Valor da Venda</span
+            >
+          </th>
+          <th
+            class="text-center subtitulo4"
+            *ngIf="tabela == 'todos' || tabela == 'cliente'"
+          >
+            <span
+              tooltip="Valor da parcela no caso do vendedor repassar as taxas do financiamento ao cliente"
+              >Valor das Parcelas</span
+            >
+          </th>
+          <th
+            class="text-center subtitulo4"
+            *ngIf="tabela == 'todos' || tabela == 'cliente'"
+          >
+            <span tooltip="Valor das taxas de intermediação e de parcelamento"
+              >Valor das taxas</span
+            >
+          </th>
+          <th
+            class="text-center subtitulo4"
+            *ngIf="tabela == 'todos' || tabela == 'cliente'"
+          >
+            <span tooltip="É o valor que o vendedor irá receber"
+              >Valor Líq. à Receber</span
+            >
+          </th>
+          <th
+            class="text-center subtitulo3"
+            *ngIf="tabela == 'todos' || tabela == 'dividido'"
+          >
+            <span
+              tooltip="Valor da compra para o cliente com juros da taxa de parcelamento"
+              class="text-center"
+              >Valor da Venda</span
+            >
+          </th>
+          <th
+            class="text-center subtitulo3"
+            *ngIf="tabela == 'todos' || tabela == 'dividido'"
+          >
+            <span
+              tooltip="Valor da parcelada somente com juros da taxa de parcelamento"
+              class="text-center"
+              >Valor das Parcelas</span
+            >
+          </th>
+          <th
+            class="text-center subtitulo3"
+            *ngIf="tabela == 'todos' || tabela == 'dividido'"
+          >
+            <span
+              tooltip="Valor líquido descontando a taxa de intermediação. É o valor que o vendedor irá receber"
+              class="text-center"
+              >Valor Líq. à Receber</span
+            >
+          </th>
+        </tr>
+      </thead>
+
+      <tbody *ngFor="let plano of resultados">
+        <tr>
+          <td class="conteudo1 titulo-plano">{{ plano?.nome }}</td>
+          <td class="conteudo1">
+            <ng-template #txTotal
+              >Taxa de intermediação:
+              {{ plano?.txIntermediacao / 100 | percent: "1.2" }} <br />
+              <br />
+              Taxa de Parcelamento:
+              {{ plano?.txParcelamento / 100 | percent: "1.2" }}
+            </ng-template>
+            <span [tooltip]="txTotal">
+              {{ plano?.txTotal / 100 | percent: "1.2-3" }}</span
+            >
+          </td>
+
+          <td
+            class="conteudo2"
+            *ngIf="tabela == 'todos' || tabela == 'vendedor'"
+          >
+            {{ plano?.valorVenda | currency: "BRL" }}
+          </td>
+
+          <td
+            class="conteudo2"
+            *ngIf="tabela == 'todos' || tabela == 'vendedor'"
+          >
+            {{ plano?.valorParcelaDespesaVendedor | currency: "BRL" }}
+          </td>
+
+          <td
+            class="conteudo2"
+            *ngIf="tabela == 'todos' || tabela == 'vendedor'"
+          >
+            <ng-template #valorTxDespesaVendedor>
+              Valor de desconto da taxa Débito:
+              {{ plano.valorTxDebito | currency: "BRL" }}
+              <br />
+              <br />
+              Valor de desconto da taxa de intermediação:
+              {{ plano?.valorTxIntermediacaoVendedor | currency: "BRL" }}
+              <br />
+              <br />
+              Valor de desconto da taxa de Parcelamento:
+              {{ plano?.valorTxParcelamentoVendedor | currency: "BRL" }}
+            </ng-template>
+
+            <span [tooltip]="valorTxDespesaVendedor" placement="bottom">
+              {{ plano.valorTxDespesaVendedor | currency: "BRL" }}</span
+            >
+          </td>
+
+          <td
+            class="conteudo2 text-center"
+            currencyMask
+            *ngIf="tabela == 'todos' || tabela == 'vendedor'"
+          >
+            <span>
+              {{ plano.valorLiquidoDespesaVendedor | currency: "BRL" }}
+            </span>
+          </td>
+
+          <td
+            class="conteudo4"
+            *ngIf="tabela == 'todos' || tabela == 'cliente'"
+          >
+            {{ plano.valorVendaDespesaCliente | currency: "BRL" }}
+          </td>
+          <td
+            class="conteudo4"
+            *ngIf="tabela == 'todos' || tabela == 'cliente'"
+          >
+            {{ plano.valorParcelaDespesaCliente | currency: "BRL" }}
+          </td>
+          <td
+            class="conteudo4"
+            *ngIf="tabela == 'todos' || tabela == 'cliente'"
+          >
+            <ng-template #valorTxDespesaCliente>
+              Valor de desconto da taxa Débito:
+              {{ plano.txDebitoJurosCliente | currency: "BRL" }}
+              <br />
+              <br />
+              Valor de desconto da taxa de intermediação:
+              {{ plano?.valorTxIntermediacaoCliente | currency: "BRL" }}
+              <br />
+              <br />
+              Valor de desconto da taxa de Parcelamento:
+              {{ plano?.valorTxParcelamentoCliente | currency: "BRL" }}
+            </ng-template>
+
+            <span [tooltip]="valorTxDespesaCliente" placement="bottom">{{
+              plano.valorTxDespesaCliente | currency: "BRL"
+            }}</span>
+          </td>
+          <td
+            class="conteudo4"
+            *ngIf="tabela == 'todos' || tabela == 'cliente'"
+          >
+            {{ plano.valorLiquidoDespesaClientel | currency: "BRL" }}
+          </td>
+
+          <td
+            class="conteudo3"
+            *ngIf="tabela == 'todos' || tabela == 'dividido'"
+          >
+            <ng-template #valorVendaDespesaParcelamentoCliente>
+              Valor da taxa do parcelamento pelo cliente:
+              {{ plano.valorTxParcelamentoCliente | currency: "BRL" }}
+            </ng-template>
+            <span [tooltip]="valorVendaDespesaParcelamentoCliente">
+              {{
+                plano.valorVendaDespesaParcelamentoCliente | currency: "BRL"
+              }}</span
+            >
+          </td>
+          <td
+            class="conteudo3"
+            *ngIf="tabela == 'todos' || tabela == 'dividido'"
+          >
+            {{ plano.valorParcelaDespesaParcelamentoCliente | currency: "BRL" }}
+          </td>
+          <td
+            class="conteudo3"
+            *ngIf="tabela == 'todos' || tabela == 'dividido'"
+          >
+            <ng-template #valorLiquidoDespesaIntermediacaoCliente>
+              Valor da taxa de inetemediação pelo vendedor:
+              {{ plano.valorTxIntermediacaoVendedor | currency: "BRL" }}
+            </ng-template>
+            <span [tooltip]="valorLiquidoDespesaIntermediacaoCliente">
+              {{
+                plano.valorLiquidoDespesaIntermediacaoCliente | currency: "BRL"
+              }}</span
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>

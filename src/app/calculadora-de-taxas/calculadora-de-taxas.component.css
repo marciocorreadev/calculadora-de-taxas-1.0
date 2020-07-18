@@ -1,0 +1,146 @@
+.invalid-field {
+  border: 1px solid var(--red);
+  color: var(--red);
+}
+
+.col-md-6,
+.col-md-4,
+.col-md-2,
+.acoes {
+  margin-top: 5px;
+}
+
+.acoes {
+  padding-top: 10px;
+}
+
+label {
+  font-weight: 500;
+}
+
+label[for="valorTransacao"] {
+  font-weight: 600;
+}
+
+div table * {
+  font-size: 14px;
+}
+
+i:not(.fa-info-circle) {
+  color: var(--maq);
+}
+
+.alert-erro {
+  color: var(--red);
+  font-weight: 400;
+  display: block;
+}
+
+button:disabled {
+  cursor: no-drop;
+}
+
+table thead tr .titulo1 {
+  background-color: #888a8bf8;
+}
+table thead tr .titulo2 {
+  background-color: #17a2b8;
+}
+table thead tr .titulo4 {
+  background-color: #d6b25e;
+}
+table thead tr .titulo3 {
+  background-color: #964980;
+}
+
+table thead tr * {
+  color: white;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+i:not(.fa-info-circle),
+table tbody tr .conteudo1:nth-child(2),
+table tbody tr .conteudo2:nth-child(5),
+table tbody tr .conteudo4:nth-child(9),
+table tbody tr .conteudo3:nth-child(11),
+table tbody tr .conteudo3:nth-child(13),
+table thead tr {
+  cursor: help;
+}
+
+table thead tr .subtitulo1 {
+  background-color: #aaacad;
+}
+table thead tr .subtitulo2 {
+  background-color: #58a9b6;
+}
+table thead tr .subtitulo4 {
+  background-color: #ceb782;
+}
+table thead tr .subtitulo3 {
+  background-color: #c378ae;
+}
+
+table tbody tr .conteudo1 {
+  background-color: #f3ecec;
+}
+table tbody tr .conteudo2 {
+  background-color: #e4e8f1;
+}
+table tbody tr .conteudo4 {
+  background-color: #eee6dd;
+}
+table tbody tr .conteudo3 {
+  background-color: #ecd7e8;
+}
+
+section table,
+section {
+  border-radius: 5px;
+}
+
+div section table tbody tr * {
+  font-size: 14px;
+}
+div section table thead * {
+  font-size: 14px;
+  vertical-align: middle;
+}
+table {
+  font-size: 1px;
+}
+section table tbody tr td.titulo-plano {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+:host >>> .tooltip-inner {
+  border: 2px solid var(--maq);
+  background-color: rgb(255, 255, 255);
+  color: var(--dark);
+  font-size: 12px;
+  font-weight: bold;
+  border-top-color: var(--maq);
+}
+:host >>> .tooltip.top .tooltip-arrow:before,
+:host >>> .tooltip.bottom .tooltip-arrow:before {
+  border-top-color: var(--maq);
+  border-bottom-color: var(--maq);
+}
+
+#calcular {
+  background-color: var(--maq);
+}
+#calcular:hover {
+  background-color: var(--blue);
+}
+
+@media (min-width: 720px) {
+  .acoes {
+    padding-top: 29px;
+  }
+  .alert-erro {
+    display: inline;
+  }
+}
