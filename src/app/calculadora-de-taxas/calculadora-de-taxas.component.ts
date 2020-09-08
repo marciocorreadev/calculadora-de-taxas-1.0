@@ -117,6 +117,7 @@ export class CalculadoraDeTaxasComponent implements OnInit, OnDestroy {
     return {
       '0': () => (this.taxas.debito0 = value),
       '199': () => (this.taxas.debito199 = value),
+
       null: () => (this.taxas.debitoNull = value),
     }[type]();
   }
